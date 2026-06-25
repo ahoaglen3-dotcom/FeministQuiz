@@ -13,19 +13,20 @@ file share / learning-management system.
 
 ### For the classroom
 - Share the file (or host it — see below) and have students take the quiz.
-- Students answer 20 multiple-choice questions, then press **Submit answers**.
+- Each attempt draws **10 questions at random from a 20-question bank**:
+  **5 true/false** and **5 multiple-choice**, mixed together. Different
+  students (and re-takes) generally see a different set.
+- Students answer all 10 questions, then press **Submit answers**.
 - They immediately get a score plus an explanation for every question, each
   grounded in a specific argument from the book.
-- **Shuffle question order** randomizes the questions so neighbors don't see
-  the same sequence.
-- **Retake quiz** resets it for another attempt.
+- **Retake quiz** draws a fresh set of 10 questions for another attempt.
 
 > Note: this is a self-check study tool. Scoring happens in the browser, so it
 > is meant for learning and review rather than for secure/proctored grading.
 
 ## What it covers
 
-The 20 questions span the book's main arguments, including:
+The 20-question bank (10 true/false + 10 multiple-choice) spans the book's main arguments, including:
 - hooks' definition of feminism ("a movement to end sexism, sexist exploitation, and oppression")
 - Why feminism is not "anti-male," and how everyone is socialized into sexism
 - Patriarchy and "white supremacist capitalist patriarchy"
@@ -43,6 +44,12 @@ home page.
 ## Editing the questions
 
 All questions live in the `QUESTIONS` array inside the `<script>` block of
-`index.html`. Each entry has a `q` (question), `options` (array of choices),
+`index.html`. Each entry has a `type` (`"mc"` or `"tf"`), a `q` (question),
+`options` (array of choices — true/false items use `["True","False"]`),
 `answer` (0-based index of the correct option), and `explain` (feedback text).
 Add, remove, or reword entries there and reload the page.
+
+The number drawn from each group per attempt is controlled by the
+`TF_PER_QUIZ` and `MC_PER_QUIZ` constants near the top of the app logic
+(both default to `5`). Just make sure the bank still has at least that many
+questions of each type.
