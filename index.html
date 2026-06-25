@@ -49,9 +49,6 @@
   }
   .intro h2{margin-top:0;color:var(--plum)}
   .intro ul{margin:.4rem 0 .2rem;padding-left:1.2rem;color:var(--muted)}
-  .controls{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:1rem}
-
-  label.toggle{display:inline-flex;align-items:center;gap:.45rem;color:var(--muted);font-size:.92rem;cursor:pointer}
 
   button{
     font:inherit;
@@ -77,7 +74,9 @@
     margin-bottom:1.05rem;
   }
   .q .qnum{
-    display:inline-block;
+    display:flex;
+    align-items:center;
+    gap:.55rem;
     font-size:.78rem;
     font-weight:700;
     letter-spacing:.06em;
@@ -85,6 +84,16 @@
     color:var(--accent);
     margin-bottom:.35rem;
   }
+  .q .badge{
+    display:inline-block;
+    font-size:.68rem;
+    letter-spacing:.05em;
+    padding:.12rem .5rem;
+    border-radius:999px;
+    background:#f0e6f8;
+    color:var(--plum);
+  }
+  .q .badge.tf{background:#e6eefa;color:#2f5fa3}
   .q .qtext{font-weight:600;font-size:1.07rem;margin-bottom:.85rem}
   .options{display:flex;flex-direction:column;gap:.55rem}
   .opt{
@@ -100,6 +109,7 @@
   .opt:hover{border-color:var(--plum-light);background:#faf4fe}
   .opt input{margin-top:.28rem;accent-color:var(--plum);width:1.05rem;height:1.05rem;flex:none}
   .opt .letter{font-weight:700;color:var(--plum);flex:none}
+  .opt .txt{flex:1}
   .opt.correct{border-color:var(--correct);background:var(--correct-bg)}
   .opt.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
   .opt.disabled{cursor:default}
@@ -152,7 +162,6 @@
   #result .msg{margin-top:.4rem;color:var(--muted)}
   .progress{font-size:.9rem;color:var(--muted)}
   footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1.5rem 1rem 2.5rem}
-  .visually-hidden{position:absolute;left:-9999px}
   @media (max-width:480px){
     header.hero h1{font-size:1.5rem}
     .wrap{padding:1.1rem .8rem 4rem}
@@ -172,13 +181,11 @@
     <h2>About this quiz</h2>
     <p>This quiz checks your understanding of the key ideas in bell hooks' <em>Feminism Is for Everybody: Passionate Politics</em> (South End Press, 2000). It covers her definition of feminism, the difference between reformist and revolutionary feminism, and her arguments about class, race, the body, masculinity, violence, and love.</p>
     <ul>
-      <li>Answer each multiple-choice question, then press <strong>Submit answers</strong>.</li>
-      <li>You'll see your score plus an explanation for every question.</li>
-      <li>There are no trick questions — every answer comes straight from the book.</li>
+      <li>Each attempt draws <strong>10 questions</strong> at random from a 20-question bank: <strong>5 true/false</strong> and <strong>5 multiple-choice</strong>.</li>
+      <li>Answer every question, then press <strong>Submit answers</strong>.</li>
+      <li>You'll see your score plus an explanation for each question, drawn straight from the book.</li>
+      <li>Press <strong>Retake quiz</strong> for a fresh set of questions.</li>
     </ul>
-    <div class="controls">
-      <label class="toggle"><input type="checkbox" id="shuffle"> Shuffle question order</label>
-    </div>
   </section>
 
   <div id="result"></div>
@@ -200,11 +207,17 @@
 
 <script>
 /* ------------------------------------------------------------------
-   Question bank — every answer/explanation is grounded in the text.
-   answer = index (0-based) of the correct option.
+   Question bank (20): 10 multiple-choice + 10 true/false.
+   Each attempt presents 5 of each, chosen at random.
+   - type:   'mc' or 'tf'
+   - options: answer choices (true/false items use ["True","False"])
+   - answer:  0-based index of the correct option
+   Every answer/explanation is grounded in the book's text.
 ------------------------------------------------------------------ */
 const QUESTIONS = [
+  /* ---------------- MULTIPLE CHOICE ---------------- */
   {
+    type: "mc",
     q: "How does bell hooks define feminism throughout the book?",
     options: [
       "A movement to end sexism, sexist exploitation, and oppression",
@@ -216,17 +229,7 @@ const QUESTIONS = [
     explain: "hooks repeats this definition (first offered in <em>Feminist Theory: From Margin to Center</em>) because it names <strong>sexism</strong> — not men — as the problem, and is broad enough to include institutionalized, systemic sexism."
   },
   {
-    q: "Why does hooks say she loves this particular definition of feminism?",
-    options: [
-      "Because it makes clear feminism is not anti-male — the problem is sexism, which anyone can perpetuate",
-      "Because it focuses the movement narrowly on women's legal rights",
-      "Because it proves that women are morally superior to men",
-      "Because it keeps feminism the property of trained academics"
-    ],
-    answer: 0,
-    explain: "She notes the definition implies <em>all</em> sexist thinking is the problem 'whether those who perpetuate it are female or male, child or adult,' so it does not imply men are the enemy."
-  },
-  {
+    type: "mc",
     q: "According to hooks, who is capable of sexist thinking and action?",
     options: [
       "Both women and men, since everyone is socialized from birth to accept sexist thought",
@@ -238,6 +241,7 @@ const QUESTIONS = [
     explain: "hooks insists 'females can be just as sexist as men.' Because we are all socialized into sexist thinking, ending patriarchy requires everyone to change their minds and hearts."
   },
   {
+    type: "mc",
     q: "What word does hooks use to name institutionalized sexism, and what fuller phrase recurs throughout the book?",
     options: [
       "'Patriarchy' — and the fuller phrase 'white supremacist capitalist patriarchy'",
@@ -249,6 +253,7 @@ const QUESTIONS = [
     explain: "hooks calls patriarchy 'institutionalized sexism' and repeatedly uses the interlocking term <em>white supremacist capitalist patriarchy</em> to show how sexism, racism, and class exploitation reinforce one another."
   },
   {
+    type: "mc",
     q: "What is the difference between 'reformist' and 'revolutionary' feminism as hooks describes it?",
     options: [
       "Reformist feminism seeks women's equality within the existing system; revolutionary feminism seeks to transform and end patriarchy itself",
@@ -260,17 +265,7 @@ const QUESTIONS = [
     explain: "Reformist thinkers wanted gender equality within white supremacist capitalist patriarchy. Revolutionary thinkers wanted to 'transform that system, to bring an end to patriarchy and sexism.'"
   },
   {
-    q: "Why, according to hooks, did the reformist vision of 'women's lib' come to dominate the public imagination?",
-    options: [
-      "Patriarchal mass media promoted the version of women simply 'wanting what men had,' and economic conditions made gender equality in the workforce acceptable",
-      "Revolutionary feminists refused to write any books",
-      "The government legally banned revolutionary feminism",
-      "Most women had never experienced sexism"
-    ],
-    answer: 0,
-    explain: "hooks argues the media ignored the revolutionary vision and amplified the image of women 'wanting what men had,' which was 'easier to realize' as the economy made workplace gender equality palatable."
-  },
-  {
+    type: "mc",
     q: "What does hooks mean by 'lifestyle feminism'?",
     options: [
       "The depoliticized idea that there can be as many versions of feminism as there are women, so anyone can fit feminism to her existing life without changing herself or the culture",
@@ -282,6 +277,7 @@ const QUESTIONS = [
     explain: "hooks warns that lifestyle feminism removed the politics from feminism, assuming a woman of any politics 'could fit feminism into her existing lifestyle' — which made it acceptable precisely because it demanded no real change."
   },
   {
+    type: "mc",
     q: "Where does hooks say most people learn what they 'know' about feminism?",
     options: [
       "From patriarchal mass media, which portrays feminism as anti-male",
@@ -293,6 +289,7 @@ const QUESTIONS = [
     explain: "She observes that most people's misunderstanding 'reflects the reality that most folks learn about feminism from patriarchal mass media' — hearing thirdhand that feminists 'hate men.'"
   },
   {
+    type: "mc",
     q: "What disrupted the early utopian vision that 'sisterhood is powerful'?",
     options: [
       "Discussions of class and race, which revealed how some women dominate and exploit other women",
@@ -304,6 +301,7 @@ const QUESTIONS = [
     explain: "hooks writes that utopian sisterhood was 'disrupted by discussions of class and race'; women could only become 'sisters in struggle' by confronting how women themselves dominate others through sex, class, and race."
   },
   {
+    type: "mc",
     q: "What is hooks' critique of how the early movement framed reproductive rights?",
     options: [
       "Highlighting abortion above reproductive rights as a whole reflected the class biases of privileged white women at the forefront of the movement",
@@ -315,28 +313,7 @@ const QUESTIONS = [
     explain: "hooks argues that issues like sex education, prenatal care, and forced sterilization were just as vital, and that spotlighting abortion 'reflected the class biases of the women who were at the forefront of the movement.'"
   },
   {
-    q: "On hooks' logic, can a person be 'anti-choice' and still be a feminist?",
-    options: [
-      "No — depriving females of reproductive rights is a form of sexist oppression; though a woman may personally never choose abortion while still supporting the right to choose",
-      "Yes — feminism has no position on reproductive rights",
-      "Yes — as long as she works for equal pay",
-      "No — and feminists must personally choose to have abortions"
-    ],
-    answer: 0,
-    explain: "hooks distinguishes being personally pro-choice-but-not-pro-abortion-for-oneself (compatible with feminism) from being <em>anti-choice</em>: 'She cannot be anti-abortion and an advocate of feminism.'"
-  },
-  {
-    q: "What was the purpose of feminist consciousness-raising (CR) groups?",
-    options: [
-      "Spaces where people examined and challenged their own sexist thinking so they could change their minds and hearts",
-      "Fundraising events for political candidates",
-      "Self-defense training classes",
-      "Book clubs that avoided discussing politics"
-    ],
-    answer: 0,
-    explain: "CR groups were where individuals confronted internalized sexism — 'a constant change of heart' — making them, in hooks' view, the foundation of feminist transformation that was later largely dismantled."
-  },
-  {
+    type: "mc",
     q: "What kind of masculinity does hooks call for in her chapter on feminist masculinity?",
     options: [
       "A masculinity grounded in self-esteem and self-love rather than in the capacity to dominate others",
@@ -348,72 +325,7 @@ const QUESTIONS = [
     explain: "hooks says patriarchal masculinity teaches men that identity 'resides in their capacity to dominate.' She envisions feminist masculinity built on self-love — and a politics that 'loves boys and men.'"
   },
   {
-    q: "What is hooks' critique of the 1970s–80s 'men's liberation movement'?",
-    options: [
-      "Men cast themselves as victims of rigid sex roles while remaining unconcerned with their own sexist oppression of women",
-      "It demanded far too much accountability from men",
-      "It was secretly run by feminists",
-      "It successfully ended patriarchy"
-    ],
-    answer: 0,
-    explain: "hooks quotes her own critique: these men 'identified themselves as victims of sexism' and named rigid sex roles as the source, 'though... they were not particularly concerned with their sexist exploitation and oppression of women.'"
-  },
-  {
-    q: "Why did hooks write this short, accessible book?",
-    options: [
-      "She wanted a concise, jargon-free primer she could hand to anyone to explain what feminism really is",
-      "She wanted to write a dense academic theory for scholars",
-      "She was required to by her publisher",
-      "She wanted to attack other feminist writers"
-    ],
-    answer: 0,
-    explain: "hooks longed for 'a concise, fairly easy to read... book' to counter anti-feminist backlash — a primer she could give people so they could understand feminism firsthand. Hence: feminism is for everybody."
-  },
-  {
-    q: "In the chapter on beauty, what does hooks argue about the fashion and cosmetics industries' response to feminism?",
-    options: [
-      "Capitalist investors feared feminism would hurt business, so they funded media campaigns trivializing it and portraying feminists as 'ugly'",
-      "These industries immediately embraced feminist values",
-      "Feminists demanded all women stop caring about appearance entirely",
-      "Beauty was never discussed by feminists"
-    ],
-    answer: 0,
-    explain: "hooks recounts that cosmetic and fashion capitalists 'feared that feminism would destroy their business' and bankrolled media images suggesting feminists were 'big, hypermasculine, and just plain old ugly.'"
-  },
-  {
-    q: "What is hooks' key point in 'Feminist Class Struggle' about the supposed 'crisis' of the unhappy housewife?",
-    options: [
-      "It was really a crisis only for a small group of well-educated white women, while masses of women were already working long hours for low wages",
-      "It affected all women equally regardless of class or race",
-      "It was invented by the media and never real for anyone",
-      "It mainly concerned wealthy men"
-    ],
-    answer: 0,
-    explain: "hooks points out that confinement in the home 'really was only a crisis for a small group of well-educated white women,' since most women were already in the workforce — many of whom would have seen staying home as 'freedom.'"
-  },
-  {
-    q: "Why does hooks prefer the term 'patriarchal violence' over 'domestic violence'?",
-    options: [
-      "It reminds us that the violence is rooted in the belief that a more powerful person may control others through coercive force",
-      "It applies only to violence between strangers",
-      "It excludes violence against children",
-      "It softens the seriousness of the abuse"
-    ],
-    answer: 0,
-    explain: "hooks favors 'patriarchal violence' because it keeps in view that such violence — including same-sex and adult-against-child violence — rests on the patriarchal belief that the powerful may dominate others by force."
-  },
-  {
-    q: "What does hooks say about the relationship between feminism and religion/spirituality?",
-    options: [
-      "Feminism is not inherently anti-religion; it has actually helped transform patriarchal religious thought so women can connect to the sacred",
-      "Feminism requires every woman to abandon religion",
-      "Religion and feminism are completely unrelated",
-      "Only atheists can be feminists"
-    ],
-    answer: 0,
-    explain: "hooks argues that although people assume 'feminism is anti-religion,' it has 'helped transform patriarchal religious thought,' opening space (across Christian, Jewish, Buddhist, Muslim and other traditions) for spiritual life."
-  },
-  {
+    type: "mc",
     q: "What does 'visionary feminism' require, according to hooks' final chapters?",
     options: [
       "Rooting imagination in concrete reality while envisioning possibilities beyond it, and building a broad, accessible movement across class, race, and gender",
@@ -423,6 +335,78 @@ const QUESTIONS = [
     ],
     answer: 0,
     explain: "hooks calls for theory 'written in an accessible language,' a movement that addresses 'girls and boys, women and men, across class,' and a vision of mutuality, interdependency, and well-being for all."
+  },
+
+  /* ---------------- TRUE / FALSE ---------------- */
+  {
+    type: "tf",
+    q: "True or False: bell hooks defines feminism simply as women gaining equality with men.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. hooks defines feminism as 'a movement to end sexism, sexist exploitation, and oppression.' She deliberately rejects the 'equality with men' framing because it implies men are the standard and obscures systemic sexism."
+  },
+  {
+    type: "tf",
+    q: "True or False: According to hooks, women can be just as sexist as men.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. hooks writes that 'females can be just as sexist as men,' because everyone is socialized from birth to accept sexist thought and action."
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks argues that feminism is fundamentally an anti-male movement.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. hooks stresses that the problem is sexism — which both women and men perpetuate — not men themselves. She calls for men to be seen as 'comrades in struggle.'"
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks uses the phrase 'white supremacist capitalist patriarchy' to describe how sexism, racism, and class exploitation are interlocked.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. This recurring phrase is central to hooks' analysis: domination based on gender, race, and class reinforce one another within a single interlocking system."
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks prefers the term 'patriarchal violence' over 'domestic violence' because it keeps the system of domination in view.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. She finds 'patriarchal violence' more useful because it reminds us the violence rests on the belief that a more powerful person may control others through coercive force — and it includes same-sex and adult-against-child violence."
+  },
+  {
+    type: "tf",
+    q: "True or False: In hooks' view, a person can be anti-abortion (anti-choice) and still be a feminist.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. hooks argues depriving females of reproductive rights is a form of sexist oppression: 'She cannot be anti-abortion and an advocate of feminism.' (One may personally never choose abortion yet still support the right to choose.)"
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks says contemporary feminism's early focus on abortion reflected the class biases of privileged white women in the movement.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. She argues that highlighting abortion above broader reproductive issues (sex education, prenatal care, forced sterilization) 'reflected the class biases of the women who were at the forefront of the movement.'"
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks claims feminism is inherently anti-religion and incompatible with spiritual life.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. hooks argues feminism is not inherently anti-religion; it has actually 'helped transform patriarchal religious thought' so that more people can connect to the sacred and sustain a spiritual life."
+  },
+  {
+    type: "tf",
+    q: "True or False: hooks wrote this book as a dense academic text intended mainly for scholars.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. She deliberately wrote a 'concise, fairly easy to read' primer — free of jargon — so that anyone could understand what feminism really is. That is the whole point of 'feminism is for everybody.'"
+  },
+  {
+    type: "tf",
+    q: "True or False: Reformist feminism, as hooks describes it, aims to fully dismantle patriarchy rather than gain equality within the existing system.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. That describes <em>revolutionary</em> feminism. Reformist feminism sought women's equality <em>within</em> white supremacist capitalist patriarchy; revolutionary feminism sought to transform and end that system."
   }
 ];
 
@@ -434,10 +418,12 @@ const submitBtn = document.getElementById('submitBtn');
 const retakeBtn = document.getElementById('retakeBtn');
 const progressEl = document.getElementById('progress');
 const resultEl = document.getElementById('result');
-const shuffleEl = document.getElementById('shuffle');
 const LETTERS = ['A','B','C','D','E','F'];
 
-let order = [];   // current display order of question indices
+const TF_PER_QUIZ = 5;   // true/false questions per attempt
+const MC_PER_QUIZ = 5;   // multiple-choice questions per attempt
+
+let order = [];   // current display order of bank indices
 let graded = false;
 
 function shuffled(arr){
@@ -449,6 +435,17 @@ function shuffled(arr){
   return a;
 }
 
+function indicesOfType(type){
+  return QUESTIONS.reduce((acc, q, i) => { if(q.type===type) acc.push(i); return acc; }, []);
+}
+
+function pickQuestions(){
+  const tf = shuffled(indicesOfType('tf')).slice(0, TF_PER_QUIZ);
+  const mc = shuffled(indicesOfType('mc')).slice(0, MC_PER_QUIZ);
+  // mix the two types together so they don't appear in predictable blocks
+  return shuffled(tf.concat(mc));
+}
+
 function buildQuiz(){
   graded = false;
   resultEl.classList.remove('show');
@@ -458,7 +455,7 @@ function buildQuiz(){
   submitBtn.disabled = false;
   form.innerHTML = '';
 
-  order = shuffleEl.checked ? shuffled([...QUESTIONS.keys()]) : [...QUESTIONS.keys()];
+  order = pickQuestions();
 
   order.forEach((qIdx, displayIdx) => {
     const item = QUESTIONS[qIdx];
@@ -466,9 +463,15 @@ function buildQuiz(){
     card.className = 'q';
     card.id = 'q-' + qIdx;
 
-    const num = document.createElement('span');
+    const num = document.createElement('div');
     num.className = 'qnum';
-    num.textContent = 'Question ' + (displayIdx + 1) + ' of ' + order.length;
+    const label = document.createElement('span');
+    label.textContent = 'Question ' + (displayIdx + 1) + ' of ' + order.length;
+    const badge = document.createElement('span');
+    badge.className = 'badge' + (item.type === 'tf' ? ' tf' : '');
+    badge.textContent = item.type === 'tf' ? 'True / False' : 'Multiple choice';
+    num.appendChild(label);
+    num.appendChild(badge);
     card.appendChild(num);
 
     const qt = document.createElement('div');
@@ -481,9 +484,9 @@ function buildQuiz(){
 
     item.options.forEach((optText, oIdx) => {
       const id = 'q' + qIdx + '_o' + oIdx;
-      const label = document.createElement('label');
-      label.className = 'opt';
-      label.setAttribute('for', id);
+      const optLabel = document.createElement('label');
+      optLabel.className = 'opt';
+      optLabel.setAttribute('for', id);
 
       const input = document.createElement('input');
       input.type = 'radio';
@@ -492,17 +495,22 @@ function buildQuiz(){
       input.value = oIdx;
       input.addEventListener('change', updateProgress);
 
-      const letter = document.createElement('span');
-      letter.className = 'letter';
-      letter.textContent = LETTERS[oIdx] + '.';
+      optLabel.appendChild(input);
+
+      // letters only make sense for multiple-choice
+      if (item.type === 'mc'){
+        const letter = document.createElement('span');
+        letter.className = 'letter';
+        letter.textContent = LETTERS[oIdx] + '.';
+        optLabel.appendChild(letter);
+      }
 
       const txt = document.createElement('span');
+      txt.className = 'txt';
       txt.textContent = optText;
+      optLabel.appendChild(txt);
 
-      label.appendChild(input);
-      label.appendChild(letter);
-      label.appendChild(txt);
-      opts.appendChild(label);
+      opts.appendChild(optLabel);
     });
 
     card.appendChild(opts);
@@ -598,7 +606,6 @@ function showResult(score, total){
 
 submitBtn.addEventListener('click', gradeQuiz);
 retakeBtn.addEventListener('click', buildQuiz);
-shuffleEl.addEventListener('change', () => { if(!graded) buildQuiz(); });
 
 buildQuiz();
 </script>
