@@ -1,8 +1,13 @@
-# Feminism Is for Everybody — Reading Quiz
+# Foundations of Feminism — Reading Quiz
 
-A self-contained, web-based reading-comprehension quiz for students, based on
-bell hooks' *Feminism Is for Everybody: Passionate Politics* (South End Press, 2000).
-The original book is included in this repo as `bell_hooks-feminism_is_for_everybody.pdf`.
+A self-contained, web-based reading-comprehension quiz for students, covering two
+foundational feminist texts:
+
+- bell hooks, *Feminism Is for Everybody: Passionate Politics* (2000)
+- Betty Friedan, *The Feminine Mystique* (1963)
+
+Both books are included in this repo as `bell_hooks-feminism_is_for_everybody.pdf`
+and `The Feminine Mystique.pdf`.
 
 ## How to use it
 
@@ -13,9 +18,9 @@ file share / learning-management system.
 
 ### For the classroom
 - Share the file (or host it — see below) and have students take the quiz.
-- Each attempt draws **10 questions at random from a 20-question bank**:
-  **5 true/false** and **5 multiple-choice**, mixed together. Different
-  students (and re-takes) generally see a different set.
+- Each attempt draws **10 questions at random from a 30-question bank**:
+  **5 true/false** and **5 multiple-choice**, mixed together and spanning both
+  books. Different students (and re-takes) generally see a different set.
 - Students answer all 10 questions, then press **Submit answers**.
 - They immediately get a score plus an explanation for every question, each
   grounded in a specific argument from the book.
@@ -26,7 +31,9 @@ file share / learning-management system.
 
 ## What it covers
 
-The 20-question bank (10 true/false + 10 multiple-choice) spans the book's main arguments, including:
+The 30-question bank (15 true/false + 15 multiple-choice) spans both books' main arguments.
+
+**From bell hooks' *Feminism Is for Everybody*:**
 - hooks' definition of feminism ("a movement to end sexism, sexist exploitation, and oppression")
 - Why feminism is not "anti-male," and how everyone is socialized into sexism
 - Patriarchy and "white supremacist capitalist patriarchy"
@@ -34,6 +41,14 @@ The 20-question bank (10 true/false + 10 multiple-choice) spans the book's main 
 - Mass media's portrayal of feminism
 - Class, race, and the limits of "sisterhood"
 - Reproductive rights, beauty, work, violence, masculinity, spirituality, and visionary feminism
+
+**From Betty Friedan's *The Feminine Mystique*:**
+- "The problem that has no name" and the silent question, "Is this all?"
+- What the feminine mystique claims (femininity as women's highest value and only commitment)
+- Friedan's thesis that the core issue is a stunted problem of identity, not a sexual one
+- "The Sexual Sell" — advertisers, business, and the housewife as consumer
+- The post-war "happy housewife" image and her critique of Freud
+- The "comfortable concentration camp" analogy and her "new life plan for women"
 
 ## Hosting it online (optional)
 

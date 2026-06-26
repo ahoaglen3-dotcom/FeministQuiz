@@ -170,20 +170,20 @@
 </head>
 <body>
 <header class="hero">
-  <h1>Feminism Is for Everybody</h1>
-  <p>Passionate Politics</p>
-  <p class="by">A reading comprehension quiz · based on the book by bell hooks</p>
+  <h1>Foundations of Feminism</h1>
+  <p>A reading comprehension quiz</p>
+  <p class="by">bell hooks · <em>Feminism Is for Everybody</em>  &amp;  Betty Friedan · <em>The Feminine Mystique</em></p>
 </header>
 
 <div class="wrap">
 
   <section class="panel intro" id="introPanel">
     <h2>About this quiz</h2>
-    <p>This quiz checks your understanding of the key ideas in bell hooks' <em>Feminism Is for Everybody: Passionate Politics</em> (South End Press, 2000). It covers her definition of feminism, the difference between reformist and revolutionary feminism, and her arguments about class, race, the body, masculinity, violence, and love.</p>
+    <p>This quiz checks your understanding of two foundational feminist texts: bell hooks' <em>Feminism Is for Everybody: Passionate Politics</em> (2000) and Betty Friedan's <em>The Feminine Mystique</em> (1963). It covers hooks' definition of feminism and her arguments about class, race, the body, and masculinity, as well as Friedan's account of "the problem that has no name" and the post-war myth of the happy housewife.</p>
     <ul>
-      <li>Each attempt draws <strong>10 questions</strong> at random from a 20-question bank: <strong>5 true/false</strong> and <strong>5 multiple-choice</strong>.</li>
+      <li>Each attempt draws <strong>10 questions</strong> at random from a 30-question bank: <strong>5 true/false</strong> and <strong>5 multiple-choice</strong>, spanning both books.</li>
       <li>Answer every question, then press <strong>Submit answers</strong>.</li>
-      <li>You'll see your score plus an explanation for each question, drawn straight from the book.</li>
+      <li>You'll see your score plus an explanation for each question, drawn straight from the books.</li>
       <li>Press <strong>Retake quiz</strong> for a fresh set of questions.</li>
     </ul>
   </section>
@@ -201,7 +201,8 @@
 </div>
 
 <footer>
-  Quotations and ideas are drawn from bell hooks, <em>Feminism Is for Everybody: Passionate Politics</em>.
+  Quotations and ideas are drawn from bell hooks, <em>Feminism Is for Everybody: Passionate Politics</em>,
+  and Betty Friedan, <em>The Feminine Mystique</em>.
   This quiz is an educational study aid for classroom use.
 </footer>
 
@@ -337,6 +338,67 @@ const QUESTIONS = [
     explain: "hooks calls for theory 'written in an accessible language,' a movement that addresses 'girls and boys, women and men, across class,' and a vision of mutuality, interdependency, and well-being for all."
   },
 
+  {
+    type: "mc",
+    q: "In The Feminine Mystique, what does Betty Friedan call the unspoken dissatisfaction felt by countless American suburban housewives?",
+    options: [
+      "The problem that has no name",
+      "The second shift",
+      "The glass ceiling",
+      "The double bind"
+    ],
+    answer: 0,
+    explain: "Friedan opens the book with 'the problem that has no name' — the buried 'strange stirring, a sense of dissatisfaction' behind the silent question, 'Is this all?' Even psychoanalysts, she notes, had no name for it."
+  },
+  {
+    type: "mc",
+    q: "According to Friedan, what does 'the feminine mystique' itself claim?",
+    options: [
+      "That the highest value and only commitment for women is the fulfillment of their own femininity as wives and mothers",
+      "That women are biologically and intellectually inferior to men",
+      "That women should compete with men for careers and power",
+      "That femininity is a social construct with no real meaning"
+    ],
+    answer: 0,
+    explain: "Friedan quotes the mystique directly: it 'says that the highest value and the only commitment for women is the fulfillment of their own femininity' — glorifying the housewife-mother role above education, careers, or political life."
+  },
+  {
+    type: "mc",
+    q: "What is Friedan's central thesis about the root of women's discontent?",
+    options: [
+      "The core problem is not sexual but a problem of identity — a stunting of growth perpetuated by the feminine mystique",
+      "The core problem is that women lacked the legal right to vote",
+      "The core problem is purely economic, caused by unequal pay",
+      "The core problem is that women had too much leisure time"
+    ],
+    answer: 0,
+    explain: "Friedan writes: 'the core of the problem for women today is not sexual but a problem of identity — a stunting or evasion of growth that is perpetuated by the feminine mystique,' which denies women the need to grow and fulfill their human potential."
+  },
+  {
+    type: "mc",
+    q: "In her chapter 'The Sexual Sell,' what force does Friedan argue helped keep women in the home?",
+    options: [
+      "Advertisers and business, because housewives are the chief customers and buy more when kept in a 'nameless-yearning' state",
+      "Labor unions protecting men's jobs",
+      "Churches that forbade women from working",
+      "Foreign governments competing in the space race"
+    ],
+    answer: 0,
+    explain: "Friedan argues 'the real business of America is business': since women are the chief customers of American business, perpetuating housewifery 'makes sense (and dollars)' — women buy more things when kept underused and home-bound."
+  },
+  {
+    type: "mc",
+    q: "What does Friedan propose as the way out of the housewife 'trap' — her 'new life plan for women'?",
+    options: [
+      "Finding identity through serious education and meaningful creative work pursued as part of a lifelong plan, not just any job",
+      "Abandoning marriage and children entirely",
+      "Returning to traditional roles but with more appreciation",
+      "Waiting for men to grant women more leisure and appliances"
+    ],
+    answer: 0,
+    explain: "Friedan argues a woman finds herself 'by creative work of her own,' but warns 'a job, any job, is not the answer.' The way out is serious education and work she can take seriously as part of a life plan — a self-chosen purpose."
+  },
+
   /* ---------------- TRUE / FALSE ---------------- */
   {
     type: "tf",
@@ -407,6 +469,41 @@ const QUESTIONS = [
     options: ["True", "False"],
     answer: 1,
     explain: "False. That describes <em>revolutionary</em> feminism. Reformist feminism sought women's equality <em>within</em> white supremacist capitalist patriarchy; revolutionary feminism sought to transform and end that system."
+  },
+  {
+    type: "tf",
+    q: "True or False: Friedan's 'problem that has no name' referred to a clearly defined medical illness that doctors readily diagnosed.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. The whole point is that it had no name: it lay 'buried, unspoken,' women were ashamed to admit it, and even psychoanalysts had no name for it. It was an unrecognized crisis of identity, not a recognized diagnosis."
+  },
+  {
+    type: "tf",
+    q: "True or False: Friedan argued that the post-WWII ideal of the 'suburban housewife' was promoted as the dream image of the American woman.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. She describes the suburban housewife as 'the dream image of the young American woman and the envy... of women all over the world' — the 'mystique of feminine fulfillment' that became the core of post-war American culture."
+  },
+  {
+    type: "tf",
+    q: "True or False: Friedan fully endorsed Freudian theory, accepting concepts like 'penis envy' as sound explanations for women's discontent.",
+    options: ["True", "False"],
+    answer: 1,
+    explain: "False. In 'The Sexual Solipsism of Sigmund Freud,' Friedan sharply criticizes Freud, treating 'penis envy' as a culturally bound misreading rather than a real explanation for women's dissatisfaction."
+  },
+  {
+    type: "tf",
+    q: "True or False: Friedan argued that women's magazines and advertisers helped promote the image of the contented, fulfilled housewife.",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. In 'The Happy Housewife Heroine' and 'The Sexual Sell,' Friedan shows how magazines and advertisers projected an idealized housewife image that hid the emptiness of 'Occupation: housewife' and sold women more goods."
+  },
+  {
+    type: "tf",
+    q: "True or False: Friedan compared the isolating, growth-stunting confinement of the housewife role to a 'comfortable concentration camp.'",
+    options: ["True", "False"],
+    answer: 0,
+    explain: "True. Her controversial chapter 'Progressive Dehumanization: The Comfortable Concentration Camp' uses that analogy. She clarifies the suburban house is not literally a death camp, but argues women are 'in a trap' that depersonalizes them and stunts their growth."
   }
 ];
 
