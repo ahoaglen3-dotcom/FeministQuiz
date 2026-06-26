@@ -18,8 +18,8 @@ file share / learning-management system.
 
 ### For the classroom
 - Share the file (or host it — see below) and have students take the quiz.
-- Each attempt draws **10 questions at random from a 30-question bank**:
-  **5 true/false** and **5 multiple-choice**, mixed together and spanning both
+- Each attempt draws **20 questions at random from a 50-question bank**:
+  **10 true/false** and **10 multiple-choice**, mixed together and spanning both
   books. Different students (and re-takes) generally see a different set.
 - Students answer all 10 questions, then press **Submit answers**.
 - They immediately get a score plus an explanation for every question, each
@@ -31,7 +31,7 @@ file share / learning-management system.
 
 ## What it covers
 
-The 30-question bank (15 true/false + 15 multiple-choice) spans both books' main arguments.
+The 50-question bank (25 true/false + 25 multiple-choice, evenly split between the two books) spans their main arguments.
 
 **From bell hooks' *Feminism Is for Everybody*:**
 - hooks' definition of feminism ("a movement to end sexism, sexist exploitation, and oppression")
@@ -66,5 +66,5 @@ Add, remove, or reword entries there and reload the page.
 
 The number drawn from each group per attempt is controlled by the
 `TF_PER_QUIZ` and `MC_PER_QUIZ` constants near the top of the app logic
-(both default to `5`). Just make sure the bank still has at least that many
+(both default to `10`). Just make sure the bank still has at least that many
 questions of each type.
