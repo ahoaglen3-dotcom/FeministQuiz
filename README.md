@@ -18,9 +18,12 @@ file share / learning-management system.
 
 ### For the classroom
 - Share the file (or host it — see below) and have students take the quiz.
-- Each attempt draws **10 questions at random from a 30-question bank**:
-  **5 true/false** and **5 multiple-choice**, mixed together and spanning both
-  books. Different students (and re-takes) generally see a different set.
+- Each attempt draws **20 questions from a 50-question bank**, balanced so every
+  quiz is **10 questions from each book** and **10 true/false + 10 multiple-choice**,
+  mixed together. Within each book the picks are spread across **distinct
+  topics/chapters**, so a single attempt samples a variety of material rather
+  than clustering on one chapter. Different students (and re-takes) generally see
+  a different set.
 - Students answer all 10 questions, then press **Submit answers**.
 - They immediately get a score plus an explanation for every question, each
   grounded in a specific argument from the book.
@@ -31,7 +34,7 @@ file share / learning-management system.
 
 ## What it covers
 
-The 30-question bank (15 true/false + 15 multiple-choice) spans both books' main arguments.
+The 50-question bank (25 true/false + 25 multiple-choice, evenly split between the two books) spans their main arguments.
 
 **From bell hooks' *Feminism Is for Everybody*:**
 - hooks' definition of feminism ("a movement to end sexism, sexist exploitation, and oppression")
@@ -59,12 +62,21 @@ home page.
 ## Editing the questions
 
 All questions live in the `QUESTIONS` array inside the `<script>` block of
-`index.html`. Each entry has a `type` (`"mc"` or `"tf"`), a `q` (question),
-`options` (array of choices — true/false items use `["True","False"]`),
-`answer` (0-based index of the correct option), and `explain` (feedback text).
-Add, remove, or reword entries there and reload the page.
+`index.html`. Each entry has:
 
-The number drawn from each group per attempt is controlled by the
-`TF_PER_QUIZ` and `MC_PER_QUIZ` constants near the top of the app logic
-(both default to `5`). Just make sure the bank still has at least that many
-questions of each type.
+- `type` — `"mc"` or `"tf"`
+- `book` — `"hooks"` or `"friedan"` (used to balance each attempt across books)
+- `topic` — a short chapter/theme tag (used to spread an attempt across chapters)
+- `q` — the question text
+- `options` — array of choices (true/false items use `["True","False"]`)
+- `answer` — 0-based index of the correct option
+- `explain` — the feedback shown after grading
+
+Add, remove, or reword entries there and reload the page. To keep variety
+strong, give related questions the same `topic` and unrelated ones different
+topics.
+
+The number drawn per attempt is controlled by the `TF_PER_QUIZ` and
+`MC_PER_QUIZ` constants near the top of the app logic (both default to `10`,
+split evenly between the two books). Make sure each book still has enough
+questions of each type to fill its share.
